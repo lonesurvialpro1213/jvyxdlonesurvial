@@ -32,9 +32,6 @@ Arqel:LaunchJunkie({
 })
     
 
-
-loadstring(game:HttpGet("https://pastebin.com/raw/zAY9pfNy"))()
-
 local _G = getgenv() or _G
 local Players, RunService, UIS, Camera = game:GetService("Players"), game:GetService("RunService"), game:GetService("UserInputService"), workspace.CurrentCamera
 local LocalPlayer = Players.LocalPlayer

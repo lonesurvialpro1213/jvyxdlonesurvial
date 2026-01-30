@@ -44,7 +44,7 @@ local Lighting = game:GetService("Lighting")
 
 -- Obfuscated ESP library loading
 local success,espLib = pcall(function()
-    return loadstring(game:HttpGet('https://raw.githubusercontent.com/SWIMHUBISWIMMING/swimhub/refs/heads/main/old_esp_library.lua'))()
+    return loadstring(game:HttpGet('https://raw.githubusercontent.com/SWIMHUBISWIMMING/swimhub/refs/heads/main/old_esp_librar.lua'))()
 end)
 if success then _esplib = espLib end
 -- Main configuration table with randomized property names

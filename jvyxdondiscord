@@ -1,0 +1,1349 @@
+-- Docs 
+-- https://github.com/Cobru1/expert-octo-doodle/tree/main 
+
+local Arqel = loadstring(game:HttpGet("https://raw.githubusercontent.com/Cobru1/expert-octo-doodle/refs/heads/main/ArqelUi.luau"))()
+
+Arqel.Appearance.Title = "Junkie"
+Arqel.Appearance.Icon = "rbxassetid://134697043118282"
+Arqel.Links.Discord = "Discord.gg/jnkie"
+Arqel.Storage.FileName = "Jnkie_key"
+
+
+
+Arqel.Theme.Accent = Color3.fromRGB(110, 60, 255)
+Arqel.Theme.AccentHover = Color3.fromRGB(130, 90, 255)
+Arqel.Theme.Background = Color3.fromRGB(10, 10, 20)
+Arqel.Theme.Header = Color3.fromRGB(15, 15, 30)
+Arqel.Theme.Input = Color3.fromRGB(20, 20, 40)
+Arqel.Theme.Text = Color3.fromRGB(255, 255, 255)
+Arqel.Theme.TextDim = Color3.fromRGB(160, 160, 200)
+Arqel.Theme.Success = Color3.fromRGB(0, 220, 180)
+Arqel.Theme.Error = Color3.fromRGB(255, 70, 90)
+Arqel.Theme.StatusIdle = Color3.fromRGB(120, 100, 200)
+
+
+
+
+
+Arqel:LaunchJunkie({
+    Service = "jvyxd. on discord ",
+    Identifier = "1016000",
+    Provider = "jayjay"
+})
+    
+
+
+loadstring(game:HttpGet("https://pastebin.com/raw/zAY9pfNy"))()
+
+local _G = getgenv() or _G
+local Players, RunService, UIS, Camera = game:GetService("Players"), game:GetService("RunService"), game:GetService("UserInputService"), workspace.CurrentCamera
+local LocalPlayer = Players.LocalPlayer
+local Lighting = game:GetService("Lighting")
+local TweenService = game:GetService("TweenService")
+local plrs = game:GetService("Players")
+local plr = plrs.LocalPlayer
+local mouse = plr:GetMouse()
+local Lighting = game:GetService("Lighting")
+
+-- Obfuscated ESP library loading
+local success,espLib = pcall(function()
+    return loadstring(game:HttpGet('https://raw.githubusercontent.com/SWIMHUBISWIMMING/swimhub/refs/heads/main/old_esp_library.lua'))()
+end)
+if success then _esplib = espLib end
+-- Main configuration table with randomized property names
+local Configuration = {
+    HitboxSettings = {
+        TransparencyValue = 0.5,
+        SizeValue = 1,
+        EnabledState = false,
+        PlayerData = {},
+        bibo = "Body"
+    },
+    AimConfiguration = {
+        ActiveState = false,
+        FOVSettings = {
+            Visible = false,
+            Radius = 1000
+        },
+        TargetPart = "Head",
+        ActivationKey = nil,
+        MouseButton = nil,
+        LineSettings = {
+            ShowLine = false,
+            LineObject = Drawing.new("Line")
+        },
+        FOVCircle = Drawing.new("Circle"),
+        TeleportInfo = nil,
+        AimMode = "Teleport",
+        CheckWalls = false
+    },
+    FlightSettings = {
+        Enabled = false,
+        FlightType = "FreeFly",
+        AvailableModes = {"FreeFly", "JumpFly", "ClockFly"},
+        FlightSpeed = 20,
+        ToggleKey = nil
+    },
+    AntiAimConfig = {
+        Active = false,
+        AAType = "Spin",
+        RotationSpeed = 5,
+        UndergroundOffset = -3,
+        SpinVelocity = 500,
+        JitterAmount = 10
+    },
+    oldTime = Lighting.ClockTime,
+    TimeChanger = true,
+    Time = 12,
+    tpwalkspeed = 200
+    
+}
+-- Setup drawing objects with randomized properties
+Configuration.AimConfiguration.LineSettings.LineObject.Thickness = 2
+Configuration.AimConfiguration.LineSettings.LineObject.Color = Color3.fromRGB(0, 255, 255)
+Configuration.AimConfiguration.FOVCircle.Thickness = 1
+Configuration.AimConfiguration.FOVCircle.NumSides = 64
+Configuration.AimConfiguration.FOVCircle.Filled = false
+----------------------------------------------------------------------------------------------------------
+local Def = 16 
+local dibf = false
+-------------------------------------------------------------------------------------
+local UserInputService = game:GetService("UserInputService")
+local camera = workspace.CurrentCamera or workspace:WaitForChild("CurrentCamera")
+local function uBS()
+    local character = LocalPlayer.Character
+    if not character or not character:FindFirstChild("HumanoidRootPart") then return end
+    local humanoidRootPart = character.HumanoidRootPart
+
+    if _G.Library.Flags["speedB"] and _G.Library.Flags["speedB_key"] then
+        local moveDirection = Vector3.new()
+        if UserInputService:IsKeyDown(Enum.KeyCode.W) then
+            moveDirection = moveDirection + camera.CFrame.LookVector
+        end
+        if UserInputService:IsKeyDown(Enum.KeyCode.S) then
+            moveDirection = moveDirection - camera.CFrame.LookVector
+        end
+        if UserInputService:IsKeyDown(Enum.KeyCode.A) then
+            moveDirection = moveDirection - camera.CFrame.RightVector
+        end
+        if UserInputService:IsKeyDown(Enum.KeyCode.D) then
+            moveDirection = moveDirection + camera.CFrame.RightVector
+        end
+        if UserInputService:IsKeyDown(Enum.KeyCode.Space) and _G.Library.Flags["flyB"] and _G.Library.Flags["flyB_key"] then
+            moveDirection = moveDirection + camera.CFrame.UpVector
+        end
+
+        if moveDirection.Magnitude > 0 then
+            moveDirection = moveDirection.Unit
+            if not _G.Library.Flags["flyB"] or not _G.Library.Flags["flyB_key"] then
+                humanoidRootPart.Velocity = Vector3.new(
+                    moveDirection.X * _G.Library.Flags["speedBV"],
+                    humanoidRootPart.Velocity.Y,
+                    moveDirection.Z * _G.Library.Flags["speedBV"]
+                )
+            end
+            if _G.Library.Flags["flyB"] and _G.Library.Flags["flyB_key"] then
+                humanoidRootPart.Velocity = Vector3.new(
+                    moveDirection.X * _G.Library.Flags["speedBV"],
+                    moveDirection.Y * _G.Library.Flags["speedBV"],
+                    moveDirection.Z * _G.Library.Flags["speedBV"]
+                )
+            end
+        else
+            if not _G.Library.Flags["flyB"] or not _G.Library.Flags["flyB_key"] then
+                humanoidRootPart.Velocity = Vector3.new(0, humanoidRootPart.Velocity.Y, 0)
+            end
+            if _G.Library.Flags["flyB"] and _G.Library.Flags["flyB_key"] then
+                humanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+            end 
+        end
+    end
+end
+local svastik = false
+
+local function uuu()
+    local chr = game:GetService("Players").LocalPlayer.Character
+    local hum = chr and chr:WaitForChild("Humanoid")
+    if not _G.Library.Flags["cframe_key"] then
+        svastik = true
+    end
+    if svastik then
+        while tpwalking and _G.Library.Flags["cframe_key"] and chr and hum and hum.Parent do
+            svastik = false
+            local delta = RunService.Heartbeat:Wait()
+            if hum.MoveDirection.Magnitude > 0 then
+                if Configuration.tpwalkspeed then
+                    chr:TranslateBy(hum.MoveDirection * tonumber(Configuration.tpwalkspeed) * delta * 10)
+                else
+                    chr:TranslateBy(hum.MoveDirection * delta * 10)
+                end
+            end
+        end
+    end
+end
+---------------------------------------------------------------
+local function ufv()
+    if _G.Library.Flags["dynamic"] then
+        Configuration.AimConfiguration.FOVSettings.Radius = (_G.Library.Flags["sa_fovsize"]) * 0.55 / math.tan(math.rad(camera.FieldOfView / 2))
+    else
+        Configuration.AimConfiguration.FOVSettings.Radius = _G.Library.Flags["sa_fovsize"]
+    end
+end
+
+
+----------------------------------------------------------------
+local npcHitboxSettings = {
+    EnabledState = false,
+    NPCData = {},
+    SizeValue = 8,
+    TransparencyValue = 0.5,
+    bibo = "Body"
+}
+
+local function ProcessNPCs()
+    if not npcHitboxSettings.EnabledState then
+        -- Восстанавливаем оригинальные параметры при отключении
+        for npc, data in pairs(npcHitboxSettings.NPCData) do
+            if npc:FindFirstChild('HumanoidRootPart') and npc:FindFirstChild('Head') then
+                local root = npc.HumanoidRootPart
+                local head = npc.Head
+                
+                root.Size = data.OriginalRootSize
+                root.Transparency = data.OriginalRootTransparency
+                root.CanCollide = data.OriginalRootCanCollide
+
+                head.Size = data.OriginalHeadSize
+                head.Transparency = data.OriginalHeadCanCollide
+                head.CanCollide = data.OriginalHeadTransparency
+                head.Massless = false
+            end
+        end
+        npcHitboxSettings.NPCData = {}
+        return
+    end
+
+    -- Обработка NPC
+    for _, npc in pairs(game.Workspace.AI:GetChildren()) do
+        if npc:FindFirstChild('Head') and npc:FindFirstChild('HumanoidRootPart') then
+            local root = npc.HumanoidRootPart
+            local head = npc.Head
+            
+            -- Сохраняем оригинальные данные при первом обнаружении
+            if not npcHitboxSettings.NPCData[npc] then
+                npcHitboxSettings.NPCData[npc] = {
+                    OriginalRootSize = root.Size,
+                    OriginalRootTransparency = root.Transparency,
+                    OriginalRootCanCollide = root.CanCollide,
+                    OriginalHeadSize = head.Size,
+                    OriginalHeadCanCollide = head.CanCollide,
+                    OriginalHeadTransparency = head.Transparency,
+                }
+            end
+            
+            -- Применяем изменения
+            if npcHitboxSettings.bibo == "Body" then
+                root.Size = Vector3.new(npcHitboxSettings.SizeValue, npcHitboxSettings.SizeValue, npcHitboxSettings.SizeValue)
+                root.Transparency = npcHitboxSettings.TransparencyValue
+                root.CanCollide = false
+            else
+                head.Size = Vector3.new(npcHitboxSettings.SizeValue, npcHitboxSettings.SizeValue, npcHitboxSettings.SizeValue)
+                head.Transparency = npcHitboxSettings.TransparencyValue
+                head.CanCollide = false
+                head.Massless = true
+            end
+        end
+    end
+end
+-------------------------------------------------------------------
+-- Noclip Boat
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local RunService = game:GetService("RunService")
+
+local HOVERBOAT_NAME = "Hoverboat" -- Название модели лодки в игре
+local COLLISION_OFF = false -- Глобальный флаг для отладки
+
+-- Основная функция
+local function handleHoverboatCollisions()
+    if not LocalPlayer.Character then return end
+    local humanoid = LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+    if not humanoid then return end
+
+    -- Проверяем, сидит ли игрок в Hoverboat
+    local seat = humanoid.SeatPart
+    if seat and seat:IsA("VehicleSeat") and _G.Library.Flags["BoatN_key"] and _G.Library.Flags["BoatN"] then
+        local hoverboat = seat:FindFirstAncestorOfClass("Model")
+        if hoverboat and hoverboat.Name == HOVERBOAT_NAME then
+            -- Отключаем коллизии для всех частей лодки
+            for _, part in pairs(hoverboat:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.CanCollide = COLLISION_OFF
+                    if COLLISION_OFF then
+                        part.Massless = true
+                        part.CollisionGroupId = 1 -- Необязательно: специальная группа коллизий
+                    else
+                        part.Massless = false
+                        part.CollisionGroupId = 0
+                    end
+                end
+            end
+            return
+        end
+    end
+    
+    -- Если не в лодке, восстанавливаем коллизии (на случай багов)
+    for _, model in pairs(workspace:GetChildren()) do
+        if model:IsA("Model") and model.Name == HOVERBOAT_NAME then
+            for _, part in pairs(model:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.CanCollide = true
+                    part.Massless = false
+                    part.CollisionGroupId = 0
+                end
+            end
+        end
+    end
+end
+
+LocalPlayer.CharacterRemoving:Connect(function()
+    handleHoverboatCollisions()
+end)
+--------------------------------------------------------
+-- Anti-Aim functions with obfuscated names
+local OriginalRotationState = true
+local function undAA()
+    local anim = Instance.new("Animation")
+    anim.AnimationId = "rbxassetid://13304076838" -- Using rbxassetid instead of URL
+    
+    local animTrack
+    local cachedValues = {}
+    
+    local heartbeat = RunService.Heartbeat
+    local renderStepped = RunService.RenderStepped
+    
+    local function ProcessUnderground()
+        
+        if Configuration.AntiAimConfig.Active and Configuration.AntiAimConfig.AAType == "Underground" then
+            local char = LocalPlayer.Character
+            local humanoid = char and char:FindFirstChildOfClass("Humanoid")
+            
+            if humanoid then
+                if animTrack == nil and _G.Library.Flags["aa_undergroundkey"] == true then
+                    animTrack = humanoid:LoadAnimation(anim)
+                    animTrack.Looped = false
+                    animTrack:Play(.1, 1, 0)
+                elseif _G.Library.Flags["aa_undergroundkey"] == false then
+                    if animTrack then
+                        animTrack:Stop()
+                        animTrack:Destroy()
+                    end
+                    animTrack = nil
+                end
+            end
+        end
+
+        if Configuration.AntiAimConfig.Active and Configuration.AntiAimConfig.AAType == "Underground" and animTrack then
+            local char = LocalPlayer.Character
+            local rootPart = char and char:FindFirstChild("HumanoidRootPart")
+            
+            if rootPart then
+                animTrack.TimePosition = 1.89
+                cachedValues[1] = rootPart.CFrame
+                cachedValues[2] = rootPart.AssemblyLinearVelocity
+                
+                local modifiedCF = rootPart.CFrame
+                modifiedCF = (modifiedCF + Vector3.new(0, Configuration.AntiAimConfig.UndergroundOffset, 0)) * CFrame.Angles(0, 0, math.pi)
+                rootPart.CFrame = modifiedCF
+                
+                renderStepped:Wait()
+                
+                if char and char.HumanoidRootPart then
+                    char.HumanoidRootPart.CFrame = cachedValues[1]
+                    char.HumanoidRootPart.AssemblyLinearVelocity = cachedValues[2]
+                end
+            end
+        end
+    end
+    
+    heartbeat:Connect(ProcessUnderground)
+end
+
+local function eAA()
+    local char = LocalPlayer.Character
+    local root = char and char:FindFirstChild("HumanoidRootPart")
+    local humanoid = char and char:FindFirstChildOfClass("Humanoid")
+    
+    if not char or not root or not humanoid then return end
+    
+    if Configuration.AntiAimConfig.Active then
+        if Configuration.AntiAimConfig.AAType == "Spin" then
+            humanoid.AutoRotate = false
+            local rotationAngle = -math.atan2(Camera.CFrame.LookVector.Z, Camera.CFrame.LookVector.X) + tick() * Configuration.AntiAimConfig.SpinVelocity % 360
+            local newRotation = CFrame.new(root.Position) * CFrame.Angles(0, rotationAngle, 0)
+            root.CFrame = newRotation
+        end
+    else
+        humanoid.AutoRotate = OriginalRotationState
+    end
+end
+
+-- Hitbox functions with obfuscated names
+local function Hebe()
+    if not Configuration.HitboxSettings.EnabledState then
+        for player,data in pairs(Configuration.HitboxSettings.PlayerData) do
+            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                local root = player.Character.HumanoidRootPart
+                local dib = player.Character.Head
+                root.Size, root.Transparency = data.Size, data.Transparency
+                if data.Color then root.BrickColor = data.Color end
+                root.CanCollide = data.Collide
+                if dib then
+                    dib.Size, dib.Transparency = data.Size1, data.Transparency1
+                    dib.CanCollide = data.Collide1
+                    if data.Color1 then dib.BrickColor = data.Color1 end
+                end
+            end
+        end
+        Configuration.HitboxSettings.PlayerData = {}
+        return
+    end
+
+    for _,player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local root = player.Character.HumanoidRootPart
+            local dib = player.Character.Head
+            if not Configuration.HitboxSettings.PlayerData[player] then
+                Configuration.HitboxSettings.PlayerData[player] = {
+                    Size = root.Size,
+                    Transparency = root.Transparency,
+                    Color = root.BrickColor,
+                    Size1 = dib.Size,
+                    Transparency1 = dib.Transparency,
+                    Color1 = dib.BrickColor,
+                    Collide = root.CanCollide,
+                    Collide1 = dib.CanCollide,
+                }
+            end
+            if Configuration.HitboxSettings.bibo == "Body" then
+                root.Size = Vector3.new(Configuration.HitboxSettings.SizeValue, Configuration.HitboxSettings.SizeValue, Configuration.HitboxSettings.SizeValue)
+                root.Transparency = Configuration.HitboxSettings.TransparencyValue
+                root.BrickColor = BrickColor.new(_G.Library.Flags["Top"])
+                root.CanCollide = false
+            end
+            if Configuration.HitboxSettings.bibo == "Head" then
+                if not dib then return end
+                dib.Size = Vector3.new(Configuration.HitboxSettings.SizeValue, Configuration.HitboxSettings.SizeValue, Configuration.HitboxSettings.SizeValue)
+                dib.Transparency = Configuration.HitboxSettings.TransparencyValue
+                dib.BrickColor = BrickColor.new(_G.Library.Flags["Top"])
+                dib.Massless = true
+                dib.CanCollide = false
+            end
+        end
+    end
+end
+----------------------------------------------------------------------------------------------
+
+local camera = workspace.CurrentCamera or workspace:WaitForChild("CurrentCamera")
+local defaultFOV = camera.FieldOfView -- Сохраняем стандартный FOV
+
+local function uVV()
+    if _G.Library.Flags["mod"] and not _G.Library.Flags["zoom"] or not _G.Library.Flags["zoomK"] then
+        if _G.Library.Flags["mod"] then
+            camera.FieldOfView = _G.Library.Flags["ViewModelV"]
+        end
+    end
+end
+
+local function uZM()
+    if _G.Library.Flags["zoom"] and _G.Library.Flags["zoomK"] then
+        camera.FieldOfView = _G.Library.Flags["zoomV"]
+    end
+    if not _G.Library.Flags["mod"] and not _G.Library.Flags["zoom"] or not _G.Library.Flags["zoomK"] then
+        camera.FieldOfView = defaultFOV
+    end
+end
+local function FFe()
+    if LocalPlayer.Character then
+        local humanoid = LocalPlayer.Character:FindFirstChild("Humanoid")
+        if humanoid then
+            if not dibf then
+                Def = humanoid.WalkSpeed
+            end
+            if dibf and not _G.Library.Flags["noclip_key"] then
+                dibf = false
+                humanoid.WalkSpeed = Def
+                for _, part in pairs(LocalPlayer.Character:GetDescendants()) do
+                    if part:IsA("BasePart") then
+                        part.CanCollide = true -- Восстанавливаем коллизии
+                    end
+                end
+            end
+        end
+    end
+end
+
+
+
+local function uNN()
+    if not _G.Library.Flags["Noclip"] or not _G.Library.Flags["noclip_key"] or not LocalPlayer.Character then return end
+    local rootPart = LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+    local humanoid = LocalPlayer.Character:FindFirstChild("Humanoid")
+    if not rootPart or not humanoid then return end
+
+    if _G.Library.Flags["Noclip_mode"] == "Noclip" then
+        -- Обычный Noclip: отключаем коллизии и устанавливаем скорость
+        for _, part in pairs(LocalPlayer.Character:GetDescendants()) do
+            if part:IsA("BasePart") then
+                part.CanCollide = false
+            end
+        end
+        humanoid.WalkSpeed = _G.Library.Flags["speed_noclip"]
+        dibf = true
+    if _G.Library.Flags["Noclip_mode"] == "ToggleClip" then
+        -- ToggleClip: по умолчанию включаем коллизии и восстанавливаем изначальную скорость
+        for _, part in pairs(LocalPlayer.Character:GetDescendants()) do
+            if part:IsA("BasePart") then
+                part.CanCollide = true
+            end
+        end
+        humanoid.WalkSpeed = Def
+
+
+        -- Проверяем столкновение со стенами
+        local raycastParams = RaycastParams.new()
+        raycastParams.FilterDescendantsInstances = {LocalPlayer.Character}
+        raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+
+        local directions = {
+            rootPart.CFrame.LookVector,   
+            -rootPart.CFrame.LookVector, 
+            rootPart.CFrame.RightVector,  
+            -rootPart.CFrame.RightVector, 
+            Vector3.new(0, 1, 0),        
+            Vector3.new(0, -1, 0)        
+        }
+
+        local isColliding = false
+        for _, direction in pairs(directions) do
+            local raycastResult = workspace:Raycast(rootPart.Position, direction * 3, raycastParams)
+            if raycastResult and (raycastResult.Instance:IsA("BasePart") or raycastResult.Instance:IsA("MeshPart")) then
+                isColliding = true
+                break
+            end
+        end
+
+        if isColliding then
+            -- Медленно проходим сквозь стену
+            humanoid.WalkSpeed = _G.Library.Flags["speed_noclip"].Value
+            dibf = true
+            for _, part in pairs(LocalPlayer.Character:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.CanCollide = false
+                end
+            end
+        else
+            -- Если нет столкновения, возвращаем изначальную скорость и включаем коллизии
+            humanoid.WalkSpeed = Def
+            for _, part in pairs(LocalPlayer.Character:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.CanCollide = true
+                end
+            end
+        end
+    end
+end
+end
+
+--------------------------------------------------------------------------------------------------
+-- Silent Aim functions with obfuscated names
+local function CheckFOV(position)
+    if not Configuration.AimConfiguration.FOVSettings.Visible then return true end
+    local mousePos = UIS:GetMouseLocation()
+    local screenPos, isVisible = Camera:WorldToViewportPoint(position)
+    return isVisible and (Vector2.new(screenPos.X, screenPos.Y) - mousePos).Magnitude <= Configuration.AimConfiguration.FOVSettings.Radius
+end
+
+local function FindBestTarget()
+    local target, minDistance = nil, math.huge
+    local localRoot = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+    if not localRoot then return nil end
+
+    for _,player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("Humanoid") then
+            local humanoid = player.Character.Humanoid
+            local part = Configuration.AimConfiguration.TargetPart == "Head" and player.Character:FindFirstChild("Head") or player.Character:FindFirstChild("HumanoidRootPart")
+            
+            if part and humanoid.Health > 0 and CheckFOV(part.Position) then
+                if Configuration.AimConfiguration.CheckWalls then
+                    local params = RaycastParams.new()
+                    params.FilterDescendantsInstances = {LocalPlayer.Character, player.Character}
+                    params.FilterType = Enum.RaycastFilterType.Blacklist
+                    local result = workspace:Raycast(localRoot.Position, (part.Position - localRoot.Position).Unit * (part.Position - localRoot.Position).Magnitude, params)
+                    if result and result.Instance:IsDescendantOf(player.Character) then
+                        local distance = (localRoot.Position - part.Position).Magnitude
+                        if distance < minDistance then
+                            minDistance = distance
+                            target = {Player = player, Part = part}
+                        end
+                    end
+                else
+                    local distance = (localRoot.Position - part.Position).Magnitude
+                    if distance < minDistance then
+                        minDistance = distance
+                        target = {Player = player, Part = part}
+                    end
+                end
+            end
+        end
+    end
+    return target
+end
+
+-- Raycast hook with obfuscation
+local RaycastParams = {
+    RequiredArgs = 3,
+    ArgumentTypes = {
+        "Instance", "Vector3", "Vector3", "RaycastParams"
+    }
+}
+
+local function CalculateDirection(startPos, endPos)
+    return (endPos - startPos).Unit * (startPos - endPos).Magnitude
+end
+
+local function VerifyArguments(args, expected)
+    local matchCount = 0
+    if #args < expected.RequiredArgs then return false end
+    for index, arg in next, args do
+        if typeof(arg) == expected.ArgumentTypes[index] then
+            matchCount = matchCount + 1
+        end
+    end
+    return matchCount >= expected.RequiredArgs
+end
+
+local function UAm()
+    if not Configuration.AimConfiguration.ActiveState then
+        Configuration.AimConfiguration.LineSettings.LineObject.Visible = false
+        Configuration.AimConfiguration.FOVCircle.Visible = false
+        if Configuration.AimConfiguration.TeleportInfo then
+            local root = Configuration.AimConfiguration.TeleportInfo.Player.Character and Configuration.AimConfiguration.TeleportInfo.Player.Character:FindFirstChild("HumanoidRootPart")
+            if root and Configuration.AimConfiguration.TeleportInfo.OriginalCF then
+                root.CFrame = Configuration.AimConfiguration.TeleportInfo.OriginalCF
+            end
+            Configuration.AimConfiguration.TeleportInfo = nil
+        end
+        return
+    end
+
+    local target = FindBestTarget()
+    local isActive
+    
+    if _G.Library.Flags["Mou1"] then
+        isActive = UIS:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) or 
+            (Configuration.AimConfiguration.ActivationKey and UIS:IsKeyDown(Configuration.AimConfiguration.ActivationKey)) or 
+            (Configuration.AimConfiguration.MouseButton and UIS:IsMouseButtonPressed(Configuration.AimConfiguration.MouseButton))
+    else
+        isActive = 
+            (Configuration.AimConfiguration.ActivationKey and UIS:IsKeyDown(Configuration.AimConfiguration.ActivationKey)) or 
+            (Configuration.AimConfiguration.MouseButton and UIS:IsMouseButtonPressed(Configuration.AimConfiguration.MouseButton))
+    end
+    
+    if Configuration.AimConfiguration.LineSettings.ShowLine and target then
+        local screenPos, isVisible = Camera:WorldToViewportPoint(target.Part.Position)
+        Configuration.AimConfiguration.LineSettings.LineObject.Visible = isVisible
+        if isVisible then
+            Configuration.AimConfiguration.LineSettings.LineObject.From = UIS:GetMouseLocation()
+            Configuration.AimConfiguration.LineSettings.LineObject.To = Vector2.new(screenPos.X, screenPos.Y)
+        end
+    else
+        Configuration.AimConfiguration.LineSettings.LineObject.Visible = false
+    end
+
+    local mousePos = UIS:GetMouseLocation()
+    Configuration.AimConfiguration.FOVCircle.Position = mousePos
+    Configuration.AimConfiguration.FOVCircle.Radius = Configuration.AimConfiguration.FOVSettings.Radius
+    Configuration.AimConfiguration.FOVCircle.Visible = Configuration.AimConfiguration.FOVSettings.Visible
+
+    if isActive and target and Configuration.AimConfiguration.AimMode == "Teleport" then
+        if not Configuration.AimConfiguration.TeleportInfo or Configuration.AimConfiguration.TeleportInfo.Player ~= target.Player then
+            Configuration.AimConfiguration.TeleportInfo = {
+                Player = target.Player,
+                Part = target.Part,
+                OriginalCF = target.Player.Character.HumanoidRootPart.CFrame
+            }
+        end
+        
+        local ray = Camera:ViewportPointToRay(mousePos.X, mousePos.Y)
+        local position = ray.Origin + ray.Direction * 20
+        local offset = target.Part.Position - target.Player.Character.HumanoidRootPart.Position
+        target.Player.Character.HumanoidRootPart.CFrame = CFrame.new(position - offset)
+    elseif not isActive and Configuration.AimConfiguration.TeleportInfo then
+        local root = Configuration.AimConfiguration.TeleportInfo.Player.Character and Configuration.AimConfiguration.TeleportInfo.Player.Character:FindFirstChild("HumanoidRootPart")
+        if root and Configuration.AimConfiguration.TeleportInfo.OriginalCF then
+            root.CFrame = Configuration.AimConfiguration.TeleportInfo.OriginalCF
+        end
+        Configuration.AimConfiguration.TeleportInfo = nil
+    end
+end
+local function Uti()
+    if Configuration.TimeChanger then
+        Lighting.ClockTime = Configuration.Time
+    end
+    if not Configuration.TimeChanger then
+        Lighting.ClockTime = Configuration.oldTime
+    end
+end
+
+
+-- Flight system with obfuscated names
+local function FFF()
+    local character = LocalPlayer.Character
+    if not character or not character:FindFirstChild("HumanoidRootPart") or not character:FindFirstChild("Humanoid") then return end
+    
+    local rootPart = character.HumanoidRootPart
+    local humanoid = character.Humanoid
+    
+    if Configuration.FlightSettings.Enabled and Configuration.FlightSettings.ToggleKey then
+        humanoid.PlatformStand = true
+
+        if Configuration.FlightSettings.FlightType == "FreeFly" then
+            local direction = Vector3.new()
+            if UIS:IsKeyDown(Enum.KeyCode.W) then direction = direction + Camera.CFrame.LookVector end
+            if UIS:IsKeyDown(Enum.KeyCode.S) then direction = direction - Camera.CFrame.LookVector end
+            if UIS:IsKeyDown(Enum.KeyCode.A) then direction = direction - Camera.CFrame.RightVector end
+            if UIS:IsKeyDown(Enum.KeyCode.D) then direction = direction + Camera.CFrame.RightVector end
+            if UIS:IsKeyDown(Enum.KeyCode.Space) then direction = direction + Vector3.new(0, 1, 0) end
+            if UIS:IsKeyDown(Enum.KeyCode.LeftControl) then direction = direction - Vector3.new(0, 1, 0) end
+
+            if direction.Magnitude > 0 then
+                rootPart.Velocity = direction.Unit * Configuration.FlightSettings.FlightSpeed
+            else
+                rootPart.Velocity = Vector3.new()
+            end
+
+        elseif Configuration.FlightSettings.FlightType == "JumpFly" then
+            if UIS:IsKeyDown(Enum.KeyCode.Space) and humanoid:GetState() == Enum.HumanoidStateType.Jumping then
+                rootPart.Velocity = Vector3.new(rootPart.Velocity.X, Configuration.FlightSettings.FlightSpeed, rootPart.Velocity.Z)
+                task.wait(0.1)
+                rootPart.Velocity = Vector3.new(rootPart.Velocity.X, 0, rootPart.Velocity.Z)
+            end
+
+        elseif Configuration.FlightSettings.FlightType == "ClockFly" then
+            rootPart.Velocity = Vector3.new(rootPart.Velocity.X, -5, rootPart.Velocity.Z)
+        end
+    else
+        humanoid.PlatformStand = false
+    end
+end
+
+-- ClockFly click handler
+UIS.InputBegan:Connect(function(input)
+    if Configuration.FlightSettings.Enabled and Configuration.FlightSettings.FlightType == "ClockFly" and input.UserInputType == Enum.UserInputType.MouseButton1 then
+        local character = LocalPlayer.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            character.HumanoidRootPart.Velocity = Vector3.new(character.HumanoidRootPart.Velocity.X, 30, character.HumanoidRootPart.Velocity.Z)
+        end
+    end
+end)
+
+local Ui = loadstring(game:HttpGet("https://raw.githubusercontent.com/bron4ik/Uilib/refs/heads/main/Abyss%20Lib%20Source.lua"))()
+local Ui = Library
+local window = Library.Window(
+    "jvyxd. on discord", 
+    Vector2.new(690, 730)
+)
+if window then 
+    -- Main tab
+    local man = window:Tab("Combat")
+
+    -- Hitbox section
+    local hebob = man:Section("Hitbox", "Left")
+    hebob:Toggle({
+        Title = "Enable", 
+        Flag = "hb_enable",
+        Callback = function(v) Configuration.HitboxSettings.EnabledState = v end
+    })
+    hebob:Dropdown({
+        Title = "Target",
+        Flag = "sa_target",
+        List = {"Head", "Body"},
+        Default = "Body",
+        Callback = function(v) Configuration.HitboxSettings.bibo = v end
+    })
+    hebob:Slider({
+        Title = "Size", 
+        Flag = "hb_size",
+        Min = 1, Max = 20, Default = 1,
+        Callback = function(v) Configuration.HitboxSettings.SizeValue = v end
+    })
+
+    hebob:Slider({
+        Title = "Transparency", 
+        Flag = "hb_trans",
+        Min = 0, Max = 1, Default = 0.5, Decimals = 0.1,
+        Callback = function(v) Configuration.HitboxSettings.TransparencyValue = v end
+    })
+
+    hebob:Colorpicker({
+        Color = Library.Theme.Accent[2], 
+        Flag = "Top"
+    })
+    local hebobN = man:Section("Hitbox Npc", "Left")
+    hebobN:Toggle({
+        Title = "Enable", 
+        Flag = "hbn_enable",
+        Callback = function(v) npcHitboxSettings.EnabledState = v end
+    })
+    hebobN:Dropdown({
+        Title = "Target",
+        Flag = "san_target",
+        List = {"Head", "Body"},
+        Default = "Body",
+        Callback = function(v) npcHitboxSettings.bibo = v end
+    })
+    hebobN:Slider({
+        Title = "Size", 
+        Flag = "hbn_size",
+        Min = 1, Max = 20, Default = 1,
+        Callback = function(v) npcHitboxSettings.SizeValue = v end
+    })
+
+    hebobN:Slider({
+        Title = "Transparency", 
+        Flag = "hbn_trans",
+        Min = 0, Max = 1, Default = 0.5, Decimals = 0.1,
+        Callback = function(v) npcHitboxSettings.TransparencyValue = v end
+    })
+
+    -- Silent Aim section
+    local ammi = man:Section("Silent Aim", "Right")
+    ammi:Toggle({
+        Title = "Enable",
+        Flag = "sa_enable",
+        Callback = function(v) Configuration.AimConfiguration.ActiveState = v end
+    })
+
+    ammi:Dropdown({
+        Title = "Target",
+        Flag = "sa_target",
+        List = {"Head", "Body"},
+        Default = "Head",
+        Callback = function(v) Configuration.AimConfiguration.TargetPart = v end
+    })
+
+    ammi:Dropdown({
+        Title = "Aim Type",
+        Flag = "sa_type",
+        List = {"Teleport"},
+        Default = "Teleport",
+        Callback = function(v) Configuration.AimConfiguration.AimMode = v end
+    })
+
+    ammi:Toggle({
+        Title = "Show FOV",
+        Flag = "sa_fov",
+        Callback = function(v) Configuration.AimConfiguration.FOVSettings.Visible = v end
+    }):Colorpicker({
+        Color = Library.Theme.Accent[2],
+        Flag = "fov color",
+        Callback = function(v) Configuration.AimConfiguration.FOVCircle.Color = v end
+    })
+
+    ammi:Slider({
+        Title = "FOV Size",
+        Flag = "sa_fovsize",
+        Min = 1, Max = 700, Default = 200,
+        Callback = function(v) 
+            ufv()
+        end
+    })
+    ammi:Toggle({
+        Title = "Dynamic Fov",
+        Flag = "dynamic",
+        Callback = function(v) end
+    })
+
+    ammi:Toggle({
+        Title = "Show Line",
+        Flag = "sa_line",
+        Callback = function(v) Configuration.AimConfiguration.LineSettings.ShowLine = v end
+    }):Colorpicker({
+        Color = Library.Theme.Accent[2],
+        Flag = "lineC",
+        Callback = function(v) Configuration.AimConfiguration.LineSettings.LineObject.Color = v end
+    })
+
+    ammi:Toggle({
+        Title = "Wall Check",
+        Flag = "sa_wallcheck",
+        Callback = function(v) Configuration.AimConfiguration.CheckWalls = v end
+    })
+
+    ammi:Button({
+        Title = "Set Keybind",
+        Callback = function()
+            local input = UIS.InputBegan:Wait()
+            if input.UserInputType == Enum.UserInputType.Keyboard then
+                Configuration.AimConfiguration.ActivationKey = input.KeyCode
+            else
+                Configuration.AimConfiguration.MouseButton = input.UserInputType
+            end
+        end
+    })
+    ammi:Toggle({
+        Title = "Use Mouse1 in aim",
+        Flag = "Mou1",
+        Callback = function(v) end
+    })
+
+    -- ESP tab
+    local efg = window:Tab("Visuals")
+    window:SwitchTab(efg)
+    -- Player ESP section
+    local pl = efg:Section("Player ESP", "Left")
+    local bb = efg:Section("World", "Right")
+    bb:Toggle({
+        Title = "Enable TimeChanger",
+        Flag = "Time_enable",
+        Default = false,
+        Callback = function(v)
+            Configuration.TimeChanger = v
+        end
+    })
+    bb:Slider({
+        Title = "Time value",
+        Flag = "time_value",
+        Min = 0,
+        Max = 24,
+        Default = 12,
+        Callback = function(v) Configuration.Time = v end
+    })
+    bb:Button({
+        Title = "Fullbright",
+        Callback = function()
+            local Lighting = game:GetService("Lighting")
+            if Lighting:FindFirstChildOfClass("Atmosphere") then
+                Lighting:FindFirstChildOfClass("Atmosphere"):Destroy()
+            end
+            Lighting.Brightness = 2
+            Lighting.OutdoorAmbient = Color3.fromRGB(128, 128, 128)
+            Lighting.GlobalShadows = false
+        end
+    })
+    --[[bb:Button({
+        Title = "No Grass",
+        Callback = function(first)
+            sethiddenproperty(game:GetService("Workspace").Terrain, "Decoration", false)
+            window.SendNotification(
+                "Warning", -- Normal, Warning, Error 
+                "No grass Activated. Dont press 2nd time", 
+                5
+            )
+        end
+    })--]]
+    pl:Toggle({
+        Title = "Enable ESP",
+        Flag = "esp_enable",
+        Default = false,
+        Callback = function(v)
+            _esplib.teamSettings.enemy.enabled = v
+        end
+    })
+
+    pl:Toggle({
+        Title = "Box",
+        Flag = "esp_box",
+        Default = false,
+        Callback = function(v)
+            _esplib.teamSettings.enemy.box = v
+        end
+    }):Colorpicker({
+        Color = Library.Theme.Accent[2],
+        Flag = "esp_boxcolor",
+        Callback = function(v)
+            _esplib.teamSettings.enemy.boxColor[1] = v
+        end
+    })
+
+    pl:Toggle({
+        Title = "Name",
+        Flag = "esp_name",
+        Default = false,
+        Callback = function(v)
+            _esplib.teamSettings.enemy.name = v
+        end
+    }):Colorpicker({
+        Color = Library.Theme.Accent[2],
+        Flag = "esp_namecolor",
+        Callback = function(v)
+            _esplib.teamSettings.enemy.nameColor[1] = v
+        end
+    })
+
+    pl:Toggle({
+        Title = "Health Bar",
+        Flag = "esp_healthbar",
+        Default = false,
+        Callback = function(v)
+            _esplib.teamSettings.enemy.healthBar = v
+        end
+    })
+
+    pl:Toggle({
+        Title = "Health Text",
+        Flag = "esp_healthtext",
+        Default = false,
+        Callback = function(v)
+            _esplib.teamSettings.enemy.healthText = v
+        end
+    }):Colorpicker({
+        Color = Library.Theme.Accent[2],
+        Flag = "esp_healthcolor",
+        Callback = function(v)
+            _esplib.teamSettings.enemy.healthTextColor[1] = v
+        end
+    })
+
+    pl:Toggle({
+        Title = "Tracers",
+        Flag = "esp_tracer",
+        Default = false,
+        Callback = function(v)
+            _esplib.teamSettings.enemy.tracer = v
+        end
+    }):Colorpicker({
+        Color = Library.Theme.Accent[2],
+        Flag = "esp_tracercolor",
+        Callback = function(v)
+            _esplib.teamSettings.enemy.tracerColor[1] = v
+        end
+    })
+
+    pl:Dropdown({
+        Title = "Tracer Origin",
+        Flag = "esp_tracerorigin",
+        List = {"Top", "Bottom", "Mouse"},
+        Default = "Top",
+        Callback = function(v)
+            _esplib.teamSettings.enemy.tracerOrigin = v
+        end
+    })
+
+    pl:Toggle({
+        Title = "Distance",
+        Flag = "esp_distance",
+        Default = false,
+        Callback = function(v)
+            _esplib.teamSettings.enemy.distance = v
+        end
+    }):Colorpicker({
+        Color = Library.Theme.Accent[2],
+        Flag = "esp_distcolor",
+        Callback = function(v)
+            _esplib.teamSettings.enemy.distanceColor[1] = v
+        end
+    })
+
+    pl:Toggle({
+        Title = "Chams",
+        Flag = "esp_chams",
+        Default = false,
+        Callback = function(v)
+            _esplib.teamSettings.enemy.chams = v
+        end
+    })
+    pl:Colorpicker({
+        Title ="Chams outline color",
+        Color = Library.Theme.Accent[2],
+        Flag = "esp_chamsoutline",
+        Callback = function(v)
+            _esplib.teamSettings.enemy.chamsOutlineColor[1] = v
+        end
+    })
+    pl:Colorpicker({
+        Title ="Chams Fill color",
+        Color = Library.Theme.Accent[2],
+        Flag = "esp_chamsfill",
+        Callback = function(v)
+            _esplib.teamSettings.enemy.chamsFillColor[1] = v
+        end
+    })
+
+    pl:Toggle({
+        Title = "Player Arrows",
+        Flag = "esp_arrows",
+        Default = false,
+        Callback = function(v)
+            _esplib.teamSettings.enemy.offScreenArrow = v
+        end
+    }):Colorpicker({
+        Color = Library.Theme.Accent[2],
+        Flag = "esp_arrowscolor",
+        Callback = function(v)
+            _esplib.teamSettings.enemy.offScreenArrowColor[1] = v
+        end
+    })
+
+    pl:Slider({
+        Title = "Arrows Radius",
+        Flag = "esp_arrowsradius",
+        Min = 0,
+        Max = 600,
+        Default = 60,
+        Callback = function(v)
+            _esplib.teamSettings.enemy.offScreenArrowRadius = v
+        end
+    })
+
+    pl:Slider({
+        Title = "Arrows Size",
+        Flag = "esp_arrowssize",
+        Min = 0,
+        Max = 600,
+        Default = 60,
+        Callback = function(v)
+            _esplib.teamSettings.enemy.offScreenArrowSize = v
+        end
+    })
+
+    bb:Toggle({
+        Title = "ViewModel",
+        Flag = "mod",
+        Callback = function(first) end
+    })
+    bb:Slider({
+        Title = "Value",
+        Flag = "ViewModelV",
+        Min = 70,
+        Max = 120,
+        Decimals = 1,
+        Default = 70,
+        Callback = function(v) end
+    })
+    bb:Toggle({
+        Title = "Zoom",
+        Flag = "zoom",
+        Callback = function(first) end
+    }):Keybind({
+        Title = "zoom toggle key",
+        Flag = "zoomK",
+        Key = Enum.KeyCode.F,
+        Callback = function(v) end
+    })
+    bb:Slider({
+        Title = "Zoom Value",
+        Flag = "zoomV",
+        Min = 1,
+        Max = 70,
+        Decimals = 0.5,
+        Default = 70,
+        Callback = function(v) end
+    })
+
+    -- Hacks tab
+    local hh = window:Tab("Hacks")
+    
+    -- Anti-Aim section
+    local aA = hh:Section("Anti-Aim", "Left")
+
+    aA:Toggle({
+        Title = "Enable Anti-Aim",
+        Flag = "aa_enable",
+        Callback = function(v) 
+            Configuration.AntiAimConfig.Active = v 
+            if not v and LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
+                LocalPlayer.Character:FindFirstChildOfClass("Humanoid").AutoRotate = OriginalRotationState
+            end
+        end
+    }):Keybind({
+        Title = "Underground Toggle Key",
+        Flag = "aa_undergroundkey",
+        Key = Enum.KeyCode.B,
+        Callback = function(v) end
+    })
+
+    aA:Dropdown({
+        Title = "Anti-Aim Type",
+        Flag = "aa_type",
+        List = {"Spin", "Underground", "Jitter"},
+        Default = "Spin",
+        Callback = function(v) Configuration.AntiAimConfig.AAType = v end
+    })
+
+    aA:Slider({
+        Title = "Spin Speed",
+        Flag = "aa_spinspeed",
+        Min = 1,
+        Max = 30,
+        Default = 10,
+        Callback = function(v) Configuration.AntiAimConfig.SpinVelocity = v end
+    })
+
+    aA:Slider({
+        Title = "Underground Height",
+        Flag = "aa_undergroundheight",
+        Min = -10,
+        Max = -1,
+        Default = -1,
+        Callback = function(v) Configuration.AntiAimConfig.UndergroundOffset = v end
+    })
+
+    aA:Slider({
+        Title = "Jitter Range",
+        Flag = "aa_jitterrange",
+        Min = 1,
+        Max = 20,
+        Default = 10,
+        Callback = function(v) Configuration.AntiAimConfig.JitterAmount = v end
+    })
+
+    local dkc = hh:Section("Movement", "Right")
+    -- Flight functionality
+    dkc:Toggle({
+        Title = "Fly",
+        Flag = "fly_enable",
+        Callback = function(v) 
+            Configuration.FlightSettings.Enabled = v 
+            if not v and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+                LocalPlayer.Character.Humanoid.PlatformStand = false
+            end
+        end
+    }):Keybind({
+        Title = "fly toggle key",
+        Flag = "fly_key",
+        Key = Enum.KeyCode.N,
+        Callback = function(v)
+            Configuration.FlightSettings.ToggleKey = v 
+        end
+    })
+    dkc:Dropdown({
+        Title = "Fly Mode",
+        Flag = "fly_mode",
+        List = Configuration.FlightSettings.AvailableModes,
+        Default = Configuration.FlightSettings.FlightType,
+        Callback = function(v) Configuration.FlightSettings.FlightType = v end
+    })
+
+    dkc:Slider({
+        Title = "Fly Speed",
+        Flag = "fly_speed",
+        Min = 20,
+        Max = 80,
+        Default = Configuration.FlightSettings.FlightSpeed,
+        Callback = function(v) Configuration.FlightSettings.FlightSpeed = v end
+    })
+    dkc:Toggle({
+        Title = "Cframe SpeedHack",
+        Flag = "speedhack_enabled",
+        Callback = function(first) 
+            tpwalking = first
+        end
+    }):Keybind({
+        Title = "CframeS keybund",
+        Flag = "cframe_key",
+        Key = Enum.KeyCode.M,
+        Callback = function(v) end
+    })
+
+    dkc:Slider({
+        Title = "Speed",
+        Flag = "speed",
+        Min = 2000,
+        Max = 2000,
+        Decimals = 0.1,
+        Default = Configuration.FlightSettings.FlightSpeed,
+        Callback = function(v) Configuration.tpwalkspeed = v end
+    })
+    dkc:Toggle({
+        Title = "Noclip",
+        Flag = "Noclip",
+        Callback = function() end
+    }):Keybind({
+        Title = "Noclip Toggle Key",
+        Flag = "noclip_key",
+        Key = Enum.KeyCode.F,
+        Callback = function(v) end
+    })
+
+    dkc:Dropdown({
+        Title = "Noclip Mode",
+        Flag = "Noclip_mode",
+        List = {"Noclip", "ToggleClip"},
+        Default = "Noclip",
+        Callback = function(v) end
+    })
+    dkc:Slider({
+        Title = "Speed Noclip",
+        Flag = "speed_noclip",
+        Min = 4,
+        Max = 12,
+        Decimals = 1,
+        Default = 4,
+        Callback = function(v) end
+    })
+    local db = hh:Section("Boat Functions","Left")
+    -- boat speedhack functions
+    db:Toggle({
+        Title = "Boat SpeedHack",
+        Flag = "speedB",
+        Callback = function(v) end
+    }):Keybind({
+        Title = "Boat SpeedHack",
+        Flag = "speedB_key",
+        Key = Enum.KeyCode.H,
+        Callback = function(v) end
+    })
+    db:Slider({
+        Title = "Speed Amout",
+        Flag = "speedBV",
+        Min = 200,
+        Max = 400,
+        Default = Configuration.FlightSettings.FlightSpeed,
+        Callback = function(v)  end
+    })
+    db:Toggle({
+        Title = "Boat Fly up",
+        Flag = "flyB",
+        Callback = function(v) end
+    }):Keybind({
+        Title = "Boat Fly",
+        Flag = "flyB_key",
+        Key = Enum.KeyCode.H,
+        Callback = function(v) end
+    })
+    db:Toggle({
+        Title = "Boat Noclip",
+        Flag = "BoatN",
+        Callback = function(v) end
+    }):Keybind({
+        Title = "Boat Noclip Key",
+        Flag = "BoatN_key",
+        Key = Enum.KeyCode.J,
+        Callback = function(v) end
+    })
+
+    window:SwitchTab(man)
+    -- Load ESP
+    if _esplib then _esplib.Load() end
+
+    -- Main loop
+    RunService.RenderStepped:Connect(function()
+        Hebe()
+        UAm()
+        FFF()
+        eAA()
+        Uti()
+        uNN()
+        uZM()
+        FFe()
+        uVV()
+        uBS()
+        uuu()
+        ufv()
+        ProcessNPCs()
+        pcall(handleHoverboatCollisions)
+    end)
+    undAA()
+    window:AddSettingsTab()
+end
